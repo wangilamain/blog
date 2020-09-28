@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="../static/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap" rel="stylesheet">
+    {% if title %}
+        <title>Flask Blog - {{ title }}</title>
+    {% else %}
+        <title>Flask Blog</title>
+    {% endif %}
+</head>
+<body>
+  <nav class="mb-1 navbar navbar-expand-lg navbar-dark secondary-color navsize" style="background-color: blue;margin-top: -80px;">
+    <a class="navbar-brand" href="/">Blog your Blog</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
+      aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent-333">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/">Home
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{url_for('main.latest_blogs')}}" style="color: white;"> Latest Blogs </a>
+          </li>
+
+          {% if current_user.is_authenticated %}
+           <li class="nav-item"><a class="nav-link" href="{{url_for('main.new_blog')}}" style="color: white;"> Create Blog </a></li>
+          {% endif %}
+      </ul>
+      <ul class="navbar-nav ml-auto nav-flex-icons" style="color: white;">
+          {% if current_user.is_authenticated %}
+          <li style="font-weight: bold;font-style: italic;padding-left:10px;padding-right:10px;">| {{current_user.username}} |</li>
+          <li><a href="{{url_for('auth.logout')}}" style="color: white;"> Log out </a></li>
+          {% else %}
+        <li class="nav-item">
+          <a class="nav-link waves-effect waves-light" href="{{url_for('auth.register')}}">
+            <i class="fas fa-user"> | Register |</i>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link waves-effect waves-light" href="{{url_for('auth.login')}}">
+              <i class="fas fa-sign-out-alt"> | Log in |</i>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+  <!-- Navbar -->
+    <main role="main" class="">
+      <div class="row" style="font-family: 'Oswald', sans-serif;">
+        <div class="col-md-12">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          {% block content %}{% endblock %}
+        </div>
+    </main>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
